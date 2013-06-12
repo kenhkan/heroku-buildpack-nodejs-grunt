@@ -181,14 +181,16 @@ if [ -f $BUILD_DIR/grunt.js ] || [ -f $BUILD_DIR/Gruntfile.js ] || [ -f $BUILD_D
   # make sure that grunt and grunt-cli are installed locally
   run_npm "install grunt-cli"
   run_npm "install grunt"
-  echo "-----> Found Gruntfile, running grunt heroku:$NODE_ENV task"
-  $BUILD_DIR/node_modules/.bin/grunt heroku:$NODE_ENV
 
   # Compile NoFlo
   echo "-----> Building NoFlo"
   cd $BUILD_DIR/node_modules/noflo
   HOME="$BUILD_DIR/node_modules/noflo" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js install 2>&1 | indent
   $BUILD_DIR/node_modules/.bin/grunt build
+
+  # Run user task
+  echo "-----> Found Gruntfile, running grunt heroku:$NODE_ENV task"
+  $BUILD_DIR/node_modules/.bin/grunt heroku:$NODE_ENV
 
 else
   echo "-----> No Gruntfile (grunt.js, Gruntfile.js, Gruntfile.coffee) found"
